@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory>
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+  <property name="hibernate.connection.url">jdbc:mysql://10.131.10.19:3306/techfaq</property>
+  <property name="hibernate.connection.username">root</property>
+  <property name="hibernate.connection.password">root123</property>
+  <!--<property name="hibernate.current_session_context_class">org.hibernate.context.ManagedSessionContext</property>-->
+  <!--<property name="hibernate.cache.use_query_cache">true</property>
+  <property name="hibernate.cache.use_second_level_cache">true</property>
+   <property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>-->
+  <property name="hibernate.jdbc.batch_size">25</property> 
+  <!-- Echo all executed SQL to stdout-->
+  <property name="show_sql">true</property>
+  <!-- <mapping class="com.buczek.entity.User"/>
+  <mapping class="com.buczek.entity.Statecountry"/>
+  <event type="load">
+   <listener class="org.hibernate.event.def.DefaultLoadEventListener"/>
+  </event> -->
+ </session-factory>
+</hibernate-configuration>

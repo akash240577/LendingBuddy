@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="LendingBuddy" basedir="." default="rebuild-offshore">
+	<property name="lib.dir" value="web/WEB-INF/lib"/>
+	<property name="classes.dir" value="web/WEB-INF/classes"/>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+<target name="init" description="init">
+  <property file="./build.properties" />
+
+  <path id="project.class.path">
+  	<pathelement location="${classes.dir}"/>
+  	<fileset dir="${lib.dir}" includes="**/*.*"/>
+  </path>
+</target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<target name="compile" depends="init" description="compile">
+    <mkdir dir="${build.dir}" />
+    <javac
+        srcdir="${src.dir}"
+        destdir="${build.dir}"
+        classpathref="project.class.path"
+        debug="${debug}"
+        target="1.5"
+    /></target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<target name="archive" depends="compile" description="archive">
+    <mkdir dir="${web-inf.dir}/lib" />
+    <jar compress="false" destfile="${web-inf.dir}/lib/lendingbuddy.jar">
+        <fileset dir="${build.dir}" />
+    </jar>
+</target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<target name="war" depends="archive" description="war">
+    <war destfile="${war.file}" webxml="${web-inf.dir}/web.xml">
+	<fileset dir="web" />
+    </war>
+</target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<target name="clean" description="clean">
+	<delete dir="${classes.dir}"/>
+</target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<target name="deploy" depends="war" description="deploy">
+    <copy file="${war.file}" toDir="${webapps.dir}"/>
+</target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+<!-- PROD -->
+<target name="copy_prod_prop" depends="init">
+    <copy file="${properties.dir}/prod.lendingbuddy.properties" tofile="${web-inf.dir}/classes/lendingbuddy.properties" verbose="true" overwrite="true"/>
+</target>
+<target name="rebuild-prod" depends="clean,init,copy_prod_prop,war" description="rebuild-prod" />
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<!-- OFFSHORE -->
+<target name="copy_offshore_prop" depends="init">
+	<!--<delete dir="${webapps.dir}/rp" quiet="true"/> -->
+    <copy file="${properties.dir}/offshore.lendingbuddy.properties" tofile="${web-inf.dir}/lendingbuddy.properties" verbose="true" overwrite="true"/>
+</target>
+<target name="rebuild-offshore" depends="clean,init,copy_offshore_prop,war,deploy" description="rebuild-offshore" />
+	
+</project>
